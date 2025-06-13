@@ -6,19 +6,33 @@ st.title("💰 Pricing Simulator")
 
 st.markdown("""
 This tool helps you simulate and benchmark pricing models:
-- **Cost-Plus**
-- **Tiered Pricing**
-- **Value-Based Pricing**
+- **Cost-Plus**: Add a margin to your total cost to ensure profitability
+- **Tiered Pricing**: Set different price levels based on quantity purchased
+- **Value-Based Pricing**: Price based on what the customer is willing to pay
+
+It also supports competitive analysis and helps you assess profit margins to inform smart pricing strategies.
 """)
 
 # Upload cost components
 st.header("📦 Input Your Cost Structure")
+st.markdown("""
+Input the core components of your unit economics. These are critical to build a sound pricing model:
+- **Fixed Cost**: Infrastructure, licensing, or base costs not tied to volume
+- **Variable Cost**: Raw material, labor, etc. per unit
+- **Service Overhead**: Support, training, or delivery cost per unit
+""")
 fixed_cost = st.number_input("Fixed Cost ($)", min_value=0.0, step=1.0)
 variable_cost = st.number_input("Variable Cost per Unit ($)", min_value=0.0, step=0.1)
 service_cost = st.number_input("Service Overhead per Unit ($)", min_value=0.0, step=0.1)
 
 # Upload competitor pricing
 st.header("📊 Competitor Pricing (Optional)")
+st.markdown("""
+Upload a CSV with competitor pricing to benchmark your proposed price. Columns should include:
+- `Competitor`
+- `Price`
+This enables you to position your offering relative to market trends.
+""")
 comp_file = st.file_uploader("Upload CSV with Competitor Prices", type=["csv"])
 
 if comp_file:
@@ -28,6 +42,12 @@ if comp_file:
 
 # Select pricing strategy
 st.header("🧮 Choose Pricing Strategy")
+st.markdown("""
+Select a strategy to simulate pricing outcomes:
+- **Cost-Plus**: Calculates price using a markup over total cost
+- **Tiered**: Uses quantity-based breakpoints to simulate average pricing
+- **Value-Based**: Directly uses perceived customer value
+""")
 strategy = st.selectbox("Pricing Strategy", ["Cost-Plus", "Tiered", "Value-Based"])
 
 # Units for value-based pricing
@@ -70,3 +90,7 @@ if comp_file and "Price" in comp_df.columns:
     comp_df["Delta vs. Recommended"] = comp_df["Price"] - price
     st.write("### Price Benchmark vs Competitors")
     st.dataframe(comp_df[["Competitor", "Price", "Delta vs. Recommended"]])
+    st.markdown("""
+    This comparison helps evaluate whether your pricing is aggressive, competitive, or premium in the market. 
+    Aim for a value proposition that aligns with your business goals (volume, margin, or positioning).
+    """)
